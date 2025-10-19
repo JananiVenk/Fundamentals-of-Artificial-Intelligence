@@ -114,7 +114,8 @@ def ON_PATH(S, STATES):
 def MULT_DFS(STATES, PATH):
     for s in STATES:
         if FINAL_STATE(s):
-            return PATH.append(s)
+            PATH.append(s)
+            return PATH
         elif ON_PATH(s,PATH):
             continue
         else:
@@ -133,4 +134,5 @@ def DFS_SOL(S, PATH):
     return MULT_DFS(succ_states,PATH)
 
 #testing for question 4
+
 # print(DFS_SOL((False,False,False,False),[]))
