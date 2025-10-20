@@ -1,6 +1,8 @@
 #answer for question 1
 
 def BFS(TREE):
+    if type(TREE)!=tuple:
+        return (TREE,)
     res=tuple()
     x=tuple()
     for t in TREE:
@@ -13,7 +15,7 @@ def BFS(TREE):
     return res
 
 # test cases for question 1
-
+# print(BFS('ROOT'))
 # print(BFS(((("L", "E"), "F"), "T")))
 # print(BFS(("R", ("I", ("G", ("H", "T"))))))
 # print(BFS((("A", ("B",)), ("C",), "D")))
@@ -24,6 +26,8 @@ def BFS(TREE):
 #answer for question 2
 
 def DFS(TREE):
+    if type(TREE)!=tuple:
+        return (TREE,)
     res=tuple()
     for t in TREE:
         if type(t)!=tuple:
@@ -44,6 +48,8 @@ def DFS(TREE):
 #answer for question 3
 
 def DFID(TREE,D):
+    if type(TREE)!=tuple:
+        return (TREE,)
     result=tuple()
     
     def BFS_DFID(tree,d):
@@ -98,14 +104,14 @@ def NEXT_STATE(S, A):
     if (S[1]==S[2] and S[0]!=S[1]) or (S[1]==S[3] and S[0]!=S[1]):
         return []
     else:
-        return tuple(S)
+        return [tuple(S)]
 
 def SUCC_FN(S):
     states=[]
     for A in ['h','b','d','p']:
         next_state=NEXT_STATE(S,A)
-        if next_state!=[]:
-            states.append(next_state)
+        if len(next_state):
+            states.append(next_state[0])
     return states
 
 def ON_PATH(S, STATES):
@@ -116,13 +122,14 @@ def MULT_DFS(STATES, PATH):
         if FINAL_STATE(s):
             PATH.append(s)
             return PATH
-        elif ON_PATH(s,PATH):
-            continue
-        else:
+        elif not ON_PATH(s,PATH):
             PATH.append(s)
-            MULT_DFS(SUCC_FN(s),PATH)
-    return []
-            
+            result=MULT_DFS(SUCC_FN(s),PATH)
+            if result:
+                return result
+            PATH=PATH[:-1]
+    return []    
+
 def DFS_SOL(S, PATH):
     if ON_PATH(S,PATH):
         return []
@@ -134,5 +141,4 @@ def DFS_SOL(S, PATH):
     return MULT_DFS(succ_states,PATH)
 
 #testing for question 4
-
 # print(DFS_SOL((False,False,False,False),[]))
