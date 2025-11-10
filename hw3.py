@@ -157,18 +157,11 @@ def next_move(row,col,dr,dc,s):
     s1=np.copy(s)
     if row+dr>=len(s1) or col+dc>=len(s1[0]):
         return None
-    
-    if isBox(s1[row+dr][col+dc]):
-        x=1
-        while row+(x*dr)<len(s1) and col+(x*dc)<len(s1[0]) and row+(x*dr)>=0 and col+(x*dc)>=0 and isBox(s1[row+(x*dr)][col+(x*dc)]):
-            x+=1
-        if row+((x+1)*dr)>=len(s1) or col+((x+1)*dc)>=len(s1[0]) or row+((x+1)*dr)<0 or col+((x+1)*dc)<0 or isWall(s1[row+((x+1)*dr)][col+((x+1)*dc)]):
-            return None
-        else:
-            s1[row+((x+1)*dr)][col+((x+1)*dc)]=box if isBlank(s1[row+((x+1)*dr)][col+((x+1)*dc)]) else boxstar
-            s1[row+dr][col+dc]=keeper
-            s1[row][col]=blank if s1[row][col]!=keeperstar else star
-            return s1
+    if isBox(s1[row+dr][col+dc]) and row+(2*dr)<len(s1) and col+(2*dc)<len(s1[0]) and row+(2*dr)>=0 and col+(2*dc)>=0 and (isBlank(s1[row+(2*dr)][col+(2*dc)]) or isStar(s1[row+(2*dr)][col+(2*dc)])):
+        s1[row+(2*dr)][col+(2*dc)]=box if isBlank(s1[row+(2*dr)][col+(2*dc)]) else boxstar
+        s1[row+dr][col+dc]=keeper
+        s1[row][col]=blank if s1[row][col]!=keeperstar else star
+        return s1
     elif isBlank(s1[row+dr][col+dc]):
         s1[row+dr][col+dc]=keeper
         s1[row][col]=blank if s1[row][col]!=keeperstar else star
@@ -511,24 +504,24 @@ def printlists(lists):
 
 
 # if __name__ == "__main__":
-#     # s1 = [[1, 1, 1, 1, 1,],
-#     #       [1, 0, 0, 4, 1,],
-#     #       [1, 0, 2, 0, 1,],
-#     #       [1, 0, 3, 0, 1,],
-#     #       [1, 0, 0, 0, 1,],
-#     #       [1, 1, 1, 1, 1,],]
-#     # print(next_states(np.array(s1)))
-#     # s2=[[1, 1, 1, 1, 1,],
-#     #     [1, 0, 0, 4, 1,],
-#     #     [1, 0, 2, 3, 1,],
-#     #     [1, 0, 0, 0, 1,],
-#     #     [1, 0, 0, 0, 1,],
-#     #     [1, 1, 1, 1, 1,],]
-#     # print(next_states(np.array(s2)))
-#     sokoban(s1, h2)
-#     sokoban(s2, h2)
+    # s1 = [[1, 1, 1, 1, 1,],
+    #       [1, 0, 0, 4, 1,],
+    #       [1, 0, 2, 0, 1,],
+    #       [1, 0, 3, 0, 1,],
+    #       [1, 0, 0, 0, 1,],
+    #       [1, 1, 1, 1, 1,],]
+    # print(next_states(np.array(s1)))
+    # s2=[[1, 1, 1, 1, 1,],
+    #     [1, 0, 0, 4, 1,],
+    #     [1, 0, 2, 3, 1,],
+    #     [1, 0, 0, 0, 1,],
+    #     [1, 0, 0, 0, 1,],
+    #     [1, 1, 1, 1, 1,],]
+    # print(next_states(np.array(s2)))
+    # sokoban(s1, h2)
+    # sokoban(s2, h2)
 
-#     sokoban(s3, h2)
+    # sokoban(s3, h2)
 
-#     sokoban(s4, h2)
-#     sokoban(s18,h2)
+    # sokoban(s4, h2)
+    # sokoban(s18,h2)
