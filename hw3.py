@@ -155,8 +155,14 @@ def goal_test(s):
 # the original array s. Thus, you may need a deep copy (e.g, s1 = np.copy(s)) to construct an indepedent array.
 def next_move(row,col,dr,dc,s):
     s1=np.copy(s)
+
     if row+dr>=len(s1) or col+dc>=len(s1[0]) or row+dr<0 or col+dc<0:
         return None
+    
+    if isBlank(s1[row+dr][col+dc]) or isStar(s1[row+dr][col+dc]):
+        s1[row+dr][col+dc]=keeper if isBlank(s1[row+dr][col+dc]) else keeperstar
+        s1[row][col]=blank if s1[row][col]!=keeperstar else star
+        return s1
     if isBoxstar(s1[row+dr][col+dc]) and row+(2*dr)<len(s1) and col+(2*dc)<len(s1[0]) and row+(2*dr)>=0 and col+(2*dc)>=0 and (isBlank(s1[row+(2*dr)][col+(2*dc)]) or isStar(s1[row+(2*dr)][col+(2*dc)])):
         s1[row+dr][col+dc]=keeperstar
         s1[row][col]=blank
@@ -165,14 +171,6 @@ def next_move(row,col,dr,dc,s):
     elif isBox(s1[row+dr][col+dc]) and row+(2*dr)<len(s1) and col+(2*dc)<len(s1[0]) and row+(2*dr)>=0 and col+(2*dc)>=0 and (isBlank(s1[row+(2*dr)][col+(2*dc)]) or isStar(s1[row+(2*dr)][col+(2*dc)])):
         s1[row+(2*dr)][col+(2*dc)]=box if isBlank(s1[row+(2*dr)][col+(2*dc)]) else boxstar
         s1[row+dr][col+dc]=keeper
-        s1[row][col]=blank if s1[row][col]!=keeperstar else star
-        return s1
-    elif isBlank(s1[row+dr][col+dc]):
-        s1[row+dr][col+dc]=keeper
-        s1[row][col]=blank if s1[row][col]!=keeperstar else star
-        return s1
-    elif isStar(s1[row+dr][col+dc]):
-        s1[row+dr][col+dc]=keeperstar
         s1[row][col]=blank if s1[row][col]!=keeperstar else star
         return s1
     else:
@@ -224,20 +222,13 @@ def h2(s):
 
     keeper_pos=getKeeperPosition(s)
     keeper_dist=[abs(i[0]-keeper_pos[0])+abs(i[1]-keeper_pos[1]) for i in box_list]
-    min_box_dist=1000
+    min_box_dist=min(keeper_dist)
     nearest_box_pos=-1
 
     for i in range(len(keeper_dist)):
-        if min_box_dist>keeper_dist[i]:
-            min_box_dist=keeper_dist[i]
+        if min_box_dist==keeper_dist[i]:
             nearest_box_pos=box_list[i]
-    min_star_dist=1000
-    nearest_star_pos=-1
-
-    for j in star_list:
-        star_distance=(abs(nearest_box_pos[0]-j[0])+abs(nearest_box_pos[1]-j[1]))
-        if min_star_dist>star_distance:
-            min_star_dist=star_distance
+    min_star_dist=min([abs(i[0]-nearest_box_pos[0])+abs(i[1]-nearest_box_pos[1]) for i in star_list])
     return min_box_dist+min_star_dist+len(box_list)-1
     
 
