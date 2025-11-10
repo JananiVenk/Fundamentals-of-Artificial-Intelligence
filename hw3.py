@@ -157,7 +157,12 @@ def next_move(row,col,dr,dc,s):
     s1=np.copy(s)
     if row+dr>=len(s1) or col+dc>=len(s1[0]):
         return None
-    if isBox(s1[row+dr][col+dc]) and row+(2*dr)<len(s1) and col+(2*dc)<len(s1[0]) and row+(2*dr)>=0 and col+(2*dc)>=0 and (isBlank(s1[row+(2*dr)][col+(2*dc)]) or isStar(s1[row+(2*dr)][col+(2*dc)])):
+    
+    if isBoxstar(s1[row+dr][col+dc]) and row+(2*dr)<len(s1) and col+(2*dc)<len(s1[0]) and row+(2*dr)>=0 and col+(2*dc)>=0 and (isBlank(s1[row+(2*dr)][col+(2*dc)]) or isStar(s1[row+(2*dr)][col+(2*dc)])):
+        s1[row+dr][col+dc]=keeperstar
+        s1[row][col]=blank
+        s1[row+(2*dr)][col+(2*dc)]=box if isBlank(s1[row+(2*dr)][col+(2*dc)]) else boxstar
+    elif isBox(s1[row+dr][col+dc]) and row+(2*dr)<len(s1) and col+(2*dc)<len(s1[0]) and row+(2*dr)>=0 and col+(2*dc)>=0 and (isBlank(s1[row+(2*dr)][col+(2*dc)]) or isStar(s1[row+(2*dr)][col+(2*dc)])):
         s1[row+(2*dr)][col+(2*dc)]=box if isBlank(s1[row+(2*dr)][col+(2*dc)]) else boxstar
         s1[row+dr][col+dc]=keeper
         s1[row][col]=blank if s1[row][col]!=keeperstar else star
