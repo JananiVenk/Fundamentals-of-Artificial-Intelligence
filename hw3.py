@@ -207,7 +207,7 @@ def h1_admissible():
 # This function will be tested in various hard examples.
 # Objective: make A* solve problems as fast as possible.
 def h2(s):
-    # finding the distance between the keeper and nearest box+distance between nearest box and nearest goal to it + (number of misplaced_boxes-1)  . This is admissible because it never overestimates the cost to reach goal state as we don't take into account walls and distance between other boxes(only +1 is used to calculate the misplaced box).
+    # finding the distance between the keeper and nearest box+distance between nearest box and nearest goal to it + (number of misplaced_boxes-1)  . This is admissible because it never overestimates the cost to reach goal state as we don't take into account walls and distance between other boxes(only +2 is used to calculate the misplaced box(1 for displacement of keeper to box and other 1 for displacement of box to star)).
     star_list=[]
     box_list=[]
     for i in range(len(s)):
@@ -228,8 +228,9 @@ def h2(s):
     for i in range(len(keeper_dist)):
         if min_box_dist==keeper_dist[i]:
             nearest_box_pos=box_list[i]
+            break
     min_star_dist=min([abs(i[0]-nearest_box_pos[0])+abs(i[1]-nearest_box_pos[1]) for i in star_list])
-    return min_box_dist+min_star_dist+len(box_list)-1
+    return min_box_dist+min_star_dist+2*(len(box_list)-1)
     
 
 
@@ -500,24 +501,24 @@ def printlists(lists):
 
 
 # if __name__ == "__main__":
-    # s1 = [[1, 1, 1, 1, 1,],
-    #       [1, 0, 0, 4, 1,],
-    #       [1, 0, 2, 0, 1,],
-    #       [1, 0, 3, 0, 1,],
-    #       [1, 0, 0, 0, 1,],
-    #       [1, 1, 1, 1, 1,],]
-    # print(next_states(np.array(s1)))
-    # s2=[[1, 1, 1, 1, 1,],
-    #     [1, 0, 0, 4, 1,],
-    #     [1, 0, 2, 3, 1,],
-    #     [1, 0, 0, 0, 1,],
-    #     [1, 0, 0, 0, 1,],
-    #     [1, 1, 1, 1, 1,],]
-    # print(next_states(np.array(s2)))
-    # sokoban(s1, h2)
-    # sokoban(s2, h2)
+#     s1 = [[1, 1, 1, 1, 1,],
+#           [1, 0, 0, 4, 1,],
+#           [1, 0, 2, 0, 1,],
+#           [1, 0, 3, 0, 1,],
+#           [1, 0, 0, 0, 1,],
+#           [1, 1, 1, 1, 1,],]
+#     print(next_states(np.array(s1)))
+#     s2=[[1, 1, 1, 1, 1,],
+#         [1, 0, 0, 4, 1,],
+#         [1, 0, 2, 3, 1,],
+#         [1, 0, 0, 0, 1,],
+#         [1, 0, 0, 0, 1,],
+#         [1, 1, 1, 1, 1,],]
+#     print(next_states(np.array(s2)))
+#     sokoban(s1, h2)
+#     sokoban(s2, h2)
 
-    # sokoban(s3, h2)
+#     sokoban(s3, h2)
 
-    # sokoban(s4, h2)
-    # sokoban(s18,h2)
+#     sokoban(s4, h2)
+#     sokoban(s17,h2)
